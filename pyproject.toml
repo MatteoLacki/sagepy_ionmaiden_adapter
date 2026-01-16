@@ -15,6 +15,11 @@ dependencies = [
     "imspy",
     "mmappet",
     "dictodot",
+    "pandas",
+    "toml",
+    "numpy",
+    "fastparquet",
+    "tqdm",
 ]
 
 [project.optional-dependencies]
