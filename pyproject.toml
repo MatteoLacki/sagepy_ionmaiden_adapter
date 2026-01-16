@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools >= 64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name="imspy_ionmaiden_adapter"
+version="0.0.1"
+description="Adapter of sagepy for ionmaiden."
+readme="README.md"
+authors=[
+    {name="MatteoLacki",email="matteo.lacki@gmail.com"},
+]
+requires-python = ">=3.6"
+dependencies = [
+    "imspy",
+    "mmappet",
+    "dictodot",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ipython",
+]
+
+
+[project.scripts]
+sagepy_search = "imspy_ionmaiden_adapter.search:cli"
+
+[project.urls]
+homepage="https://github.com/MatteoLacki/imspy_ionmaiden_adapter.git"
+repository="https://github.com/MatteoLacki/imspy_ionmaiden_adapter.git"
+
+[tool.uv]
+reinstall-package = ["imspy_ionmaiden_adapter"]
+
+# [tool.pytest.ini_options]
+# testpaths = ["tests"]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# [tool.setuptools]
+# include-package-data = true
+
+# [tool.setuptools.package-data]
+# imspy_ionmaiden_adapter = ["data/*.csv"]
