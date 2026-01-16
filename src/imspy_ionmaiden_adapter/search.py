@@ -36,7 +36,7 @@ from sagepy.utility import psm_collection_to_pandas
 #     default_config = DotDict.Recursive(json.load(f))
 
 
-def get_raw_spectrum(prec_idx):
+def get_raw_spectrum(precursors, fragments, prec_idx):
     P = precursors.iloc[prec_idx]
     precursor = Precursor(charge=None, mz=P.mz)
     start = P.fragment_spectrum_start
@@ -140,9 +140,12 @@ def search_data(
 
     results_features = {}
     with tqdm(total=len(precursors), desc="Querying spectra") as pbar:
+        # for start, end in batch_ranges(10_000, max_batch_size):
         for start, end in batch_ranges(len(precursors), max_batch_size):
             query_batch = [
-                spec_processor.process(get_raw_spectrum(prec_idx))
+                spec_processor.process(
+                    get_raw_spectrum(precursors, fragments, prec_idx)
+                )
                 for prec_idx in range(start, end)
             ]
             results_features.update(
@@ -167,7 +170,7 @@ def search_data(
     psm_list = [v for vv in results_features.values() for v in vv]
 
     output_folder.mkdir(parents=True, exist_ok=True)
-    PSM_pandas_features.to_parquet(output_folder / "features.parquet")
+    PSM_pandas_features.to_parquet(output_folder / "findings.parquet")
     with open(output_folder / "psms.bin", "wb") as outfile:
         outfile.write(compress_psms(psm_list))
 
@@ -215,5 +218,5 @@ def cli():
             f"(default: number of CPUs = {multiprocessing.cpu_count()})"
         ),
     )
-    parser.parse_args()
+    args = parser.parse_args()
     search_data(**args.__dict__)
