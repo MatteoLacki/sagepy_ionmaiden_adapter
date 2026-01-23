@@ -1,6 +1,3 @@
-make:
-    echo "Welcome to Project 'imspy_ionmaiden_adapter'"
-
 upload_test_pypi:
     twine check dist/*
     python -m pip install --upgrade twine
